@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import type { DashboardData, LensId } from "@/lib/types";
 import { useTranslations } from "@/lib/i18n/LocaleProvider";
 import { useFormatNumber } from "@/lib/i18n/useFormatNumber";
@@ -26,6 +26,7 @@ export function HealthcareMap({ data, riskDistricts = [] }: HealthcareMapProps) 
     () => new Set(LENS_IDS)
   );
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
+  const breakdownRef = useRef<HTMLDivElement>(null);
 
   const accessLens = data.accessLens;
   const lensByDistrict = useMemo(
@@ -67,6 +68,18 @@ export function HealthcareMap({ data, riskDistricts = [] }: HealthcareMapProps) 
     });
   };
 
+  const scrollToBreakdown = useCallback(() => {
+    breakdownRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  const handleIndexSelect = useCallback(
+    (name: string) => {
+      setSelectedDistrict(name);
+      requestAnimationFrame(() => scrollToBreakdown());
+    },
+    [scrollToBreakdown]
+  );
+
   const viewButton = (id: MapView, label: string) => (
     <button
       type="button"
@@ -84,7 +97,7 @@ export function HealthcareMap({ data, riskDistricts = [] }: HealthcareMapProps) 
 
   return (
     <div className="space-y-6">
-      <div className="card p-4 md:p-6">
+      <div className="card p-3 sm:p-4 md:p-6 overflow-hidden">
         <div className="mb-4">
           <p className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted mb-1">
             {t("map.lens.eyebrow")}
@@ -105,7 +118,6 @@ export function HealthcareMap({ data, riskDistricts = [] }: HealthcareMapProps) 
 
             <p className="text-[11px] text-ink-faint">
               {t("map.lens.meta")
-                .replace("{transport}", formatNumber(accessLens.cityTransportTotal))
                 .replace("{stops}", formatNumber(accessLens.magdeburgBusStops))
                 .replace("{radius}", formatDecimal(accessLens.busStopRadiusKm, 1))}
             </p>
@@ -144,13 +156,19 @@ export function HealthcareMap({ data, riskDistricts = [] }: HealthcareMapProps) 
               onClearSelection={() => setSelectedDistrict(null)}
             />
           </div>
-          <div className="lg:col-span-1 lg:sticky lg:top-20 lg:self-start">
+          <div
+            ref={breakdownRef}
+            id="district-breakdown"
+            className="lg:col-span-1 lg:sticky lg:top-20 lg:self-start scroll-mt-24"
+          >
             <DistrictPanel
               district={selectedSummary}
               risk={selectedRisk}
               lens={selectedLens}
               activeLenses={activeLenses}
               showLens={mapView === "tripleLens"}
+              busStopRadiusKm={accessLens?.busStopRadiusKm}
+              magdeburgBusStops={accessLens?.magdeburgBusStops}
             />
           </div>
         </div>
@@ -162,7 +180,7 @@ export function HealthcareMap({ data, riskDistricts = [] }: HealthcareMapProps) 
           lensByDistrict={lensByDistrict}
           activeLenses={activeLenses}
           selectedDistrict={selectedDistrict}
-          onSelect={handleSelect}
+          onSelect={handleIndexSelect}
           footnote={data.excludedDistrictsNote}
         />
       ) : (
@@ -179,13 +197,13 @@ export function HealthcareMap({ data, riskDistricts = [] }: HealthcareMapProps) 
                   type="button"
                   data-cursor-interactive
                   onClick={() => handleSelect(district.district)}
-                  className={`w-full flex items-center gap-4 px-3 py-3 rounded-md text-left transition-all ${
+                  className={`w-full flex items-center gap-2 sm:gap-4 px-2 sm:px-3 py-3 rounded-md text-left transition-all ${
                     selectedDistrict === district.district
                       ? "bg-accent-muted ring-1 ring-accent/30"
                       : "hover:bg-canvas"
                   }`}
                 >
-                  <span className="text-sm font-medium text-ink w-32 shrink-0 truncate">
+                  <span className="text-sm font-medium text-ink w-24 sm:w-32 shrink-0 truncate">
                     {district.district}
                   </span>
                   <div className="flex-1 h-2 bg-canvas rounded-full overflow-hidden">

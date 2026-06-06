@@ -1,5 +1,6 @@
 "use client";
 
+import { BrandMark } from "@/components/layout/BrandMark";
 import { useTranslations } from "@/lib/i18n/LocaleProvider";
 
 export function Header() {
@@ -7,13 +8,13 @@ export function Header() {
 
   return (
     <header className="border-b border-border bg-surface/80 backdrop-blur-sm sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-medium uppercase tracking-[0.14em] text-ink-muted">
+          <p className="text-[10px] sm:text-xs font-medium uppercase tracking-[0.14em] text-ink-muted line-clamp-1">
             {t("header.tagline")}
           </p>
-          <h1 className="font-serif text-xl md:text-2xl text-ink tracking-tight mt-0.5">
-            MAGmagdeburg
+          <h1 className="mt-0.5">
+            <BrandMark size="sm" />
           </h1>
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm text-ink-muted">

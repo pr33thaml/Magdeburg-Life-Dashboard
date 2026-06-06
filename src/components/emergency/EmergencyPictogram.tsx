@@ -9,9 +9,20 @@ import { YearSlider } from "@/components/ui/YearSlider";
 import { VEHICLE_COLORS } from "@/lib/chart-theme";
 import { useTranslations } from "@/lib/i18n/LocaleProvider";
 import { AmbulanceIcon } from "./AmbulanceIcon";
+import {
+  EmergencyExplainerSheet,
+  type EmergencyCategoryId,
+} from "./EmergencyExplainerSheet";
 import { MedicalIcon } from "./MedicalIcon";
 import { PlaneIcon } from "./PlaneIcon";
 import { RescueIcon } from "./RescueIcon";
+
+const ROW_CATEGORY: Record<string, EmergencyCategoryId> = {
+  medicalVehicles: "medical",
+  rescueTransport: "transport",
+  ambulances: "rescue",
+  helicopter: "air",
+};
 
 interface EmergencyPictogramProps {
   timeline: DashboardData["emergency"]["timeline"];
@@ -40,6 +51,8 @@ export function EmergencyPictogram({ timeline }: EmergencyPictogramProps) {
   const t = useTranslations();
   const defaultYear = timeline[timeline.length - 1]?.year ?? 2024;
   const [year, setYear] = useState(defaultYear);
+  const [explainerOpen, setExplainerOpen] = useState(false);
+  const [explainerCategory, setExplainerCategory] = useState<EmergencyCategoryId>("transport");
   const categories = useMemo(
     () =>
       [
@@ -77,25 +90,42 @@ export function EmergencyPictogram({ timeline }: EmergencyPictogramProps) {
 
   return (
     <div className="card overflow-hidden" data-cursor-interactive>
-      <div className="px-6 md:px-8 pt-6 md:pt-8 pb-4 border-b border-border bg-canvas/40">
-        <AnimatedNumber
-          value={row.total}
-          size="lg"
-          className="text-accent block leading-tight"
-        />
-        <p className="text-sm text-ink-muted mt-1">
-          {t("charts.emergency.pictogram.deploymentsIn")}{" "}
-          <span className="font-medium text-ink">{year}</span>
-        </p>
+      <div className="px-4 sm:px-6 md:px-8 pt-5 sm:pt-6 md:pt-8 pb-4 border-b border-border bg-canvas/40">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <AnimatedNumber
+              value={row.total}
+              size="lg"
+              className="text-accent block leading-tight"
+            />
+            <p className="text-sm text-ink-muted mt-1">
+              {t("charts.emergency.pictogram.deploymentsIn")}{" "}
+              <span className="font-medium text-ink">{year}</span>
+            </p>
+          </div>
+          <button
+            type="button"
+            data-cursor-interactive
+            onClick={() => setExplainerOpen(true)}
+            className="shrink-0 px-3 py-2 rounded-full text-xs font-medium border border-accent/30 text-accent bg-accent-muted/80 hover:bg-accent/10 transition-all hover:shadow-soft whitespace-nowrap"
+          >
+            {t("charts.emergency.explainer.open")}
+          </button>
+        </div>
       </div>
 
-      <div className="px-6 md:px-8 py-6 space-y-6">
+      <div className="px-4 sm:px-6 md:px-8 py-5 sm:py-6 space-y-5 sm:space-y-6">
         {categories.map((cat, index) => (
-          <div
+          <button
             key={cat.key}
+            type="button"
             data-pictogram-row
             data-cursor-interactive
-            className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5"
+            onClick={() => {
+              setExplainerCategory(ROW_CATEGORY[cat.key]);
+              setExplainerOpen(true);
+            }}
+            className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5 w-full text-left rounded-lg -mx-1 px-1 py-1 hover:bg-canvas/50 transition-colors"
           >
             <div className="sm:w-44 shrink-0">
               <div className="flex items-center gap-2 mb-1">
@@ -113,11 +143,19 @@ export function EmergencyPictogram({ timeline }: EmergencyPictogramProps) {
                 icon={cat.icon}
               />
             </div>
-          </div>
+          </button>
         ))}
       </div>
 
-      <div className="px-6 md:px-8 pb-6 md:pb-8 pt-2 border-t border-border bg-canvas/30">
+      <EmergencyExplainerSheet
+        open={explainerOpen}
+        onClose={() => setExplainerOpen(false)}
+        row={row}
+        year={year}
+        initialCategory={explainerCategory}
+      />
+
+      <div className="px-4 sm:px-6 md:px-8 pb-5 sm:pb-6 md:pb-8 pt-2 border-t border-border bg-canvas/30">
         <p className="text-xs text-ink-faint mb-2">{t("charts.emergency.pictogram.slideYears")}</p>
         <YearSlider years={years} value={year} onChange={setYear} />
       </div>

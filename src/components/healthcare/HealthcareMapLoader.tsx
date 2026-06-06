@@ -12,7 +12,7 @@ interface HealthcareMapLoaderProps {
 function MapLoading() {
   const t = useTranslations();
   return (
-    <div className="w-full h-[480px] md:h-[560px] bg-canvas rounded-lg flex items-center justify-center border border-border">
+    <div className="w-full h-[min(58vh,440px)] sm:h-[500px] md:h-[560px] bg-canvas rounded-lg flex items-center justify-center border border-border">
       <p className="text-sm text-ink-muted">{t("map.loading")}</p>
     </div>
   );

@@ -10,7 +10,7 @@ export function LanguageSwitch() {
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-[100] flex items-center gap-2 text-sm tracking-wide"
+      className="fixed bottom-[calc(4.25rem+env(safe-area-inset-bottom,0px))] md:bottom-6 right-4 sm:right-6 z-[100] flex items-center gap-2 text-sm tracking-wide"
       aria-label="Language"
     >
       {OPTIONS.map((code, index) => (

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
+import { MobileNav } from "@/components/layout/MobileNav";
 
 function useDevChunkRecovery() {
   useEffect(() => {
@@ -46,6 +47,7 @@ export function ClientShell() {
     <>
       <CustomCursor />
       <LanguageSwitch />
+      <MobileNav />
     </>
   );
 }

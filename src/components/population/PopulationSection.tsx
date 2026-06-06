@@ -2,11 +2,14 @@
 
 import { useMemo, useState } from "react";
 import {
+  PopulationExplainerSheet,
+  type PopulationChartId,
+  type PopulationExplainerContext,
+} from "@/components/population/PopulationExplainerSheet";
+import { buildPopulationContext } from "@/lib/population-explainer-context";
+import {
   AreaChart,
   Area,
-  BarChart,
-  Bar,
-  ComposedChart,
   LineChart,
   Line,
   XAxis,
@@ -15,8 +18,9 @@ import {
   Tooltip,
   ReferenceLine,
   Brush,
-  Cell,
 } from "recharts";
+import { NaturalDeficitCanvas } from "@/components/population/NaturalDeficitCanvas";
+import { MigrationFlowCanvas } from "@/components/population/MigrationFlowCanvas";
 import type { DashboardData } from "@/lib/types";
 import { useTranslations } from "@/lib/i18n/LocaleProvider";
 import { InteractiveChartCard } from "@/components/ui/InteractiveChartCard";
@@ -43,13 +47,6 @@ interface PopulationSectionProps {
   data: DashboardData["population"];
 }
 
-function toggleSet(prev: Set<string>, key: string): Set<string> {
-  const next = new Set(prev);
-  if (next.has(key)) next.delete(key);
-  else next.add(key);
-  return next;
-}
-
 export function PopulationSection({ data }: PopulationSectionProps) {
   const t = useTranslations();
   const { formatNumber, formatDecimal, locale } = useFormatNumber();
@@ -57,15 +54,20 @@ export function PopulationSection({ data }: PopulationSectionProps) {
   const [yearRange, setYearRange] = useState<YearRange>("all");
   const [activeYear, setActiveYear] = useState<number | null>(null);
   const [pinnedYear, setPinnedYear] = useState<number | null>(null);
-  const [hiddenBirthDeath, setHiddenBirthDeath] = useState<Set<string>>(new Set());
-  const [showNetMigration, setShowNetMigration] = useState(false);
-
+  const [explainerChart, setExplainerChart] = useState<PopulationChartId | null>(null);
+  const [explainerContext, setExplainerContext] = useState<PopulationExplainerContext>(() =>
+    buildPopulationContext(data, data.growth[data.growth.length - 1]?.year ?? 2024)
+  );
   const focusYear = pinnedYear ?? activeYear;
+
+  const openExplainer = (chartId: PopulationChartId, year?: number) => {
+    const y = year ?? focusYear ?? data.growth[data.growth.length - 1]?.year ?? 2024;
+    setExplainerContext(buildPopulationContext(data, y));
+    setExplainerChart(chartId);
+  };
 
   const growth = useMemo(() => filterByRange(data.growth, yearRange), [data.growth, yearRange]);
   const averageAge = useMemo(() => filterByRange(data.averageAge, yearRange), [data.averageAge, yearRange]);
-  const birthsDeaths = useMemo(() => filterByRange(data.birthsDeaths, yearRange), [data.birthsDeaths, yearRange]);
-  const migration = useMemo(() => filterByRange(data.migration, yearRange), [data.migration, yearRange]);
 
   const handleYearInteract = (year: number) => {
     setActiveYear(year);
@@ -76,9 +78,6 @@ export function PopulationSection({ data }: PopulationSectionProps) {
   const growthPrev = growthFocus
     ? findByYear(data.growth, focusYear! - 1)
     : undefined;
-
-  const bdFocus = findByYear(data.birthsDeaths, focusYear);
-  const bdPrev = bdFocus ? findByYear(data.birthsDeaths, focusYear! - 1) : undefined;
 
   const chartEvents = {
     onMouseMove: (state: { activeLabel?: string | number }) => {
@@ -100,6 +99,8 @@ export function PopulationSection({ data }: PopulationSectionProps) {
           subtitle={t("charts.population.growth.subtitle")}
           yearRange={yearRange}
           onYearRangeChange={setYearRange}
+          explainLabel={t("charts.population.explainer.open")}
+          onExplain={() => openExplainer("growth")}
           footer={
             <ChartFocusPanel
               year={focusYear}
@@ -179,6 +180,8 @@ export function PopulationSection({ data }: PopulationSectionProps) {
           subtitle={t("charts.population.age.subtitle")}
           yearRange={yearRange}
           onYearRangeChange={setYearRange}
+          explainLabel={t("charts.population.explainer.open")}
+          onExplain={() => openExplainer("age")}
           footer={
             <ChartFocusPanel
               year={focusYear}
@@ -235,198 +238,22 @@ export function PopulationSection({ data }: PopulationSectionProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <InteractiveChartCard
-          title={t("charts.population.birthsDeaths.title")}
-          subtitle={t("charts.population.birthsDeaths.subtitle")}
-          yearRange={yearRange}
-          onYearRangeChange={setYearRange}
-          series={[
-            { key: "births", label: t("charts.population.birthsDeaths.births"), color: CHART_COLORS.birth },
-            { key: "deaths", label: t("charts.population.birthsDeaths.deaths"), color: CHART_COLORS.death },
-          ]}
-          hiddenSeries={hiddenBirthDeath}
-          onSeriesToggle={(k) => setHiddenBirthDeath((p) => toggleSet(p, k))}
-          footer={
-            <ChartFocusPanel
-              year={focusYear}
-              stats={
-                bdFocus
-                  ? [
-                      {
-                        label: t("charts.population.birthsDeaths.births"),
-                        value: formatNumber(bdFocus.births),
-                        delta: bdPrev ? pctDelta(bdFocus.births, bdPrev.births) : undefined,
-                      },
-                      {
-                        label: t("charts.population.birthsDeaths.deaths"),
-                        value: formatNumber(bdFocus.deaths),
-                        delta: bdPrev ? pctDelta(bdFocus.deaths, bdPrev.deaths) : undefined,
-                        tone: "up",
-                      },
-                      {
-                        label: t("charts.population.birthsDeaths.naturalChange"),
-                        value: formatNumber(bdFocus.naturalChange),
-                        tone: bdFocus.naturalChange < 0 ? "down" : "up",
-                      },
-                    ]
-                  : []
-              }
-            />
-          }
-        >
-          <ResponsiveChart size="lg">
-              <BarChart data={birthsDeaths} margin={chartMargin} {...chartEvents}>
-                <CartesianGrid {...gridStyle} vertical={false} />
-                <XAxis dataKey="year" tick={axisStyle} axisLine={false} tickLine={false} />
-                <YAxis
-                  tick={axisStyle}
-                  axisLine={false}
-                  tickLine={false}
-                  tickFormatter={(v) => formatNumber(v)}
-                  width={45}
-                />
-                <Tooltip cursor={cursorStyle} content={<CustomTooltip />} />
-                {!hiddenBirthDeath.has("births") && (
-                  <Bar
-                    dataKey="births"
-                    name="Births"
-                    fill={CHART_COLORS.birth}
-                    radius={[3, 3, 0, 0]}
-                    maxBarSize={18}
-                    {...chartAnimation}
-                  >
-                    {birthsDeaths.map((entry) => (
-                      <Cell
-                        key={entry.year}
-                        fillOpacity={focusYear === null || focusYear === entry.year ? 1 : 0.35}
-                      />
-                    ))}
-                  </Bar>
-                )}
-                {!hiddenBirthDeath.has("deaths") && (
-                  <Bar
-                    dataKey="deaths"
-                    name="Deaths"
-                    fill={CHART_COLORS.death}
-                    radius={[3, 3, 0, 0]}
-                    maxBarSize={18}
-                    {...chartAnimation}
-                  >
-                    {birthsDeaths.map((entry) => (
-                      <Cell
-                        key={entry.year}
-                        fillOpacity={focusYear === null || focusYear === entry.year ? 1 : 0.35}
-                      />
-                    ))}
-                  </Bar>
-                )}
-              </BarChart>
-          </ResponsiveChart>
-        </InteractiveChartCard>
-
-        <InteractiveChartCard
-          title={t("charts.population.migration.title")}
-          subtitle={t("charts.population.migration.subtitle")}
-          yearRange={yearRange}
-          onYearRangeChange={setYearRange}
-          footer={
-            <>
-              <button
-                type="button"
-                onClick={() => setShowNetMigration((v) => !v)}
-                className={`mb-3 text-[11px] font-medium px-2.5 py-1 rounded-md border transition-colors ${
-                  showNetMigration
-                    ? "bg-accent-muted text-accent border-accent/30"
-                    : "bg-canvas text-ink-muted border-border"
-                }`}
-              >
-                {showNetMigration ? "Showing net migration" : "Show net migration line"}
-              </button>
-              <ChartFocusPanel
-                year={focusYear}
-                stats={
-                  findByYear(data.migration, focusYear)
-                    ? [
-                        {
-                          label: t("charts.population.migration.in"),
-                          value: formatNumber(findByYear(data.migration, focusYear)!.migrationIn),
-                        },
-                        {
-                          label: t("charts.population.migration.out"),
-                          value: formatNumber(findByYear(data.migration, focusYear)!.migrationOut),
-                        },
-                        {
-                          label: t("charts.population.migration.net"),
-                          value: formatNumber(findByYear(data.migration, focusYear)!.netMigration),
-                          tone:
-                            findByYear(data.migration, focusYear)!.netMigration > 0
-                              ? "up"
-                              : "down",
-                        },
-                      ]
-                    : []
-                }
-              />
-            </>
-          }
-        >
-          <ResponsiveChart size="lg">
-              <ComposedChart data={migration} margin={chartMargin} {...chartEvents}>
-                <CartesianGrid {...gridStyle} vertical={false} />
-                <XAxis dataKey="year" tick={axisStyle} axisLine={false} tickLine={false} />
-                <YAxis
-                  tick={axisStyle}
-                  axisLine={false}
-                  tickLine={false}
-                  tickFormatter={(v) => formatNumber(v)}
-                  width={48}
-                />
-                <Tooltip cursor={cursorStyle} content={<CustomTooltip />} />
-                <Bar
-                  dataKey="migrationIn"
-                  name="Migration In"
-                  fill={CHART_COLORS.migrationIn}
-                  radius={[3, 3, 0, 0]}
-                  maxBarSize={16}
-                  {...chartAnimation}
-                >
-                  {migration.map((entry) => (
-                    <Cell
-                      key={`in-${entry.year}`}
-                      fillOpacity={focusYear === null || focusYear === entry.year ? 1 : 0.35}
-                    />
-                  ))}
-                </Bar>
-                <Bar
-                  dataKey="migrationOut"
-                  name="Migration Out"
-                  fill={CHART_COLORS.migrationOut}
-                  radius={[3, 3, 0, 0]}
-                  maxBarSize={16}
-                  {...chartAnimation}
-                >
-                  {migration.map((entry) => (
-                    <Cell
-                      key={`out-${entry.year}`}
-                      fillOpacity={focusYear === null || focusYear === entry.year ? 1 : 0.35}
-                    />
-                  ))}
-                </Bar>
-                {showNetMigration && (
-                  <Line
-                    type="monotone"
-                    dataKey="netMigration"
-                    name="Net Migration"
-                    stroke={CHART_COLORS.migrationNet}
-                    strokeWidth={2}
-                    dot={{ r: 3 }}
-                    activeDot={activeDotStyle}
-                  />
-                )}
-              </ComposedChart>
-          </ResponsiveChart>
-        </InteractiveChartCard>
+        <NaturalDeficitCanvas data={data.birthsDeaths} onExplain={openExplainer} />
+        <MigrationFlowCanvas
+          migration={data.migration}
+          birthsDeaths={data.birthsDeaths}
+          onExplain={openExplainer}
+        />
       </div>
+
+      {explainerChart && (
+        <PopulationExplainerSheet
+          open={explainerChart !== null}
+          onClose={() => setExplainerChart(null)}
+          chartId={explainerChart}
+          context={explainerContext}
+        />
+      )}
     </div>
   );
 }

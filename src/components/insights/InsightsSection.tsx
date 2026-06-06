@@ -1,42 +1,36 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { DashboardData } from "@/lib/types";
 import { useTranslations } from "@/lib/i18n/LocaleProvider";
-import { IndexedPressureCanvas, type IndexedRow } from "./IndexedPressureCanvas";
+import { AgingCommunityCanvas } from "./AgingCommunityCanvas";
+import { AmbulanceLane } from "./AmbulanceLane";
+import { CitizenArrivalCanvas } from "./CitizenArrivalCanvas";
+import { MagdeburgBalanceReactor } from "./MagdeburgBalanceReactor";
+import { PhysicianGapCanvas } from "./PhysicianGapCanvas";
 
 interface InsightsSectionProps {
-  data: DashboardData["insights"];
+  insights: DashboardData["insights"];
+  population: DashboardData["population"];
+  emergency: DashboardData["emergency"];
+  districts: DashboardData["healthcare"]["districtSummary"];
 }
 
-function toIndexSeries(
-  timeline: DashboardData["insights"]["combinedTimeline"]
-): IndexedRow[] {
-  if (timeline.length === 0) return [];
-  const base = timeline[0];
-  return timeline.map((row) => ({
-    year: row.year,
-    emergencyIndex: Math.round((row.emergencyIncidents / base.emergencyIncidents) * 100),
-    ageIndex: Math.round((row.averageAge / base.averageAge) * 100),
-    doctorsIndex: Math.round((row.doctorsPer1000 / base.doctorsPer1000) * 100),
-  }));
-}
-
-export function InsightsSection({ data }: InsightsSectionProps) {
+export function InsightsSection({
+  insights,
+  population,
+  emergency,
+  districts,
+}: InsightsSectionProps) {
   const t = useTranslations();
   const [activeFinding, setActiveFinding] = useState<number | null>(null);
-
-  const indexedData = useMemo(
-    () => toIndexSeries(data.combinedTimeline),
-    [data.combinedTimeline]
-  );
 
   return (
     <div className="space-y-8">
       <div className="space-y-4">
         <h3 className="font-sans text-sm font-medium text-ink">{t("charts.insights.keyFindings")}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {data.keyFindings.map((finding, index) => (
+          {insights.keyFindings.map((finding, index) => (
             <button
               key={finding.id}
               type="button"
@@ -44,7 +38,7 @@ export function InsightsSection({ data }: InsightsSectionProps) {
               onClick={() =>
                 setActiveFinding((prev) => (prev === index ? null : index))
               }
-              className={`card p-6 md:p-8 text-left transition-all hover:shadow-elevated ${
+              className={`card p-4 sm:p-6 md:p-8 text-left transition-all hover:shadow-elevated ${
                 activeFinding === index
                   ? "ring-2 ring-accent/30 border-accent/40"
                   : ""
@@ -56,13 +50,23 @@ export function InsightsSection({ data }: InsightsSectionProps) {
               <h4 className="font-serif text-xl text-ink leading-snug mb-3">
                 {finding.title}
               </h4>
+              {finding.id === "finding-1" && <CitizenArrivalCanvas />}
+              {finding.id === "finding-2" && <AmbulanceLane />}
+              {finding.id === "finding-3" && <PhysicianGapCanvas districts={districts} />}
+              {finding.id === "finding-4" && (
+                <AgingCommunityCanvas timeline={insights.combinedTimeline} />
+              )}
               <p className="text-sm text-ink-muted leading-relaxed">{finding.body}</p>
             </button>
           ))}
         </div>
       </div>
 
-      <IndexedPressureCanvas data={indexedData} />
+      <MagdeburgBalanceReactor
+        population={population}
+        emergency={emergency}
+        combinedTimeline={insights.combinedTimeline}
+      />
     </div>
   );
 }

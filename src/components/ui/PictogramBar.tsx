@@ -26,6 +26,15 @@ function PictogramThumbIcon({ icon }: { icon: PictogramIcon }) {
   }
 }
 
+function formatSharePct(value: number, max: number): string {
+  if (max <= 0 || value <= 0) return "0%";
+  const pct = (value / max) * 100;
+  if (pct < 0.05) return "<0.1%";
+  if (pct < 1) return `${pct.toFixed(1)}%`;
+  if (pct < 10) return `${pct.toFixed(1)}%`;
+  return `${Math.round(pct)}%`;
+}
+
 export function PictogramBar({
   value,
   max,
@@ -34,8 +43,9 @@ export function PictogramBar({
   icon,
 }: PictogramBarProps) {
   const ratio = max > 0 ? Math.min(value / max, 1) : 0;
-  const fillRatio = ratio;
-  const pct = Math.round(ratio * 100);
+  // Keep bar/icon visible for small-but-nonzero shares; label stays exact.
+  const fillRatio = value > 0 ? Math.max(ratio, 0.012) : 0;
+  const pctLabel = formatSharePct(value, max);
 
   return (
     <div className="flex items-center gap-3 w-full min-w-0" aria-hidden>
@@ -84,8 +94,8 @@ export function PictogramBar({
             />
           ))}
       </div>
-      <span className="text-xs tabular-nums text-ink-muted w-10 text-right shrink-0 font-medium">
-        {pct}%
+      <span className="text-xs tabular-nums text-ink-muted w-12 text-right shrink-0 font-medium">
+        {pctLabel}
       </span>
     </div>
   );

@@ -88,7 +88,12 @@ export function DashboardPage({ data }: DashboardPageProps) {
           className="pb-24"
         >
           <SectionConclusion text={localized.narratives.insights} />
-          <InsightsSection data={localized.insights} />
+          <InsightsSection
+            insights={localized.insights}
+            population={localized.population}
+            emergency={localized.emergency}
+            districts={localized.healthcare.districtSummary}
+          />
         </Section>
       </main>
       <Footer

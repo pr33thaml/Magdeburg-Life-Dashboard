@@ -31,6 +31,12 @@ const config: Config = {
           emergency: "#A65D2E",
           migration: "#5C6B4A",
         },
+        brand: {
+          orange: "#E5530E",
+          "orange-light": "#F06A28",
+          "orange-deep": "#C94308",
+          brown: "#4B1105",
+        },
       },
       fontFamily: {
         serif: ["var(--font-newsreader)", "Georgia", "serif"],

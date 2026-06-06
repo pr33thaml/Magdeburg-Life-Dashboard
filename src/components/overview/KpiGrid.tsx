@@ -23,12 +23,12 @@ export function KpiGrid({ metrics }: KpiGridProps) {
   const { formatChange } = useFormatNumber();
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
       {metrics.map((metric, index) => (
         <a
           key={metric.id}
           href={KPI_SECTIONS[metric.id] ?? "#overview"}
-          className="card p-6 md:p-8 animate-slide-up group transition-all hover:shadow-elevated hover:border-border-strong hover:-translate-y-0.5"
+          className="card p-4 sm:p-6 md:p-8 animate-slide-up group transition-all hover:shadow-elevated hover:border-border-strong md:hover:-translate-y-0.5"
           style={{ animationDelay: `${index * 80}ms`, opacity: 0 }}
         >
           <p className="text-xs font-medium uppercase tracking-wider text-ink-muted mb-3 group-hover:text-ink transition-colors">

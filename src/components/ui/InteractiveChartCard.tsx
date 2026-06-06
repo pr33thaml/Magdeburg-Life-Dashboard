@@ -16,6 +16,8 @@ interface InteractiveChartCardProps {
   hiddenSeries?: Set<string>;
   onSeriesToggle?: (key: string) => void;
   footer?: ReactNode;
+  explainLabel?: string;
+  onExplain?: () => void;
 }
 
 export function InteractiveChartCard({
@@ -29,18 +31,38 @@ export function InteractiveChartCard({
   hiddenSeries,
   onSeriesToggle,
   footer,
+  explainLabel,
+  onExplain,
 }: InteractiveChartCardProps) {
   return (
-    <div className={`card p-6 md:p-8 transition-shadow hover:shadow-elevated ${className}`}>
-      <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
+    <div className={`card p-4 sm:p-6 md:p-8 transition-shadow hover:shadow-elevated overflow-hidden ${className}`}>
+      <div className="mb-5 flex flex-col gap-4">
+        <div className="min-w-0">
           <h3 className="font-sans text-sm font-medium text-ink">{title}</h3>
           {subtitle && (
             <p className="text-xs text-ink-muted mt-1">{subtitle}</p>
           )}
         </div>
-        {yearRange !== undefined && onYearRangeChange && (
-          <YearRangePills value={yearRange} onChange={onYearRangeChange} />
+        {(onExplain || (yearRange !== undefined && onYearRangeChange)) && (
+          <div
+            className={`flex flex-col sm:flex-row sm:items-center gap-2.5 pt-3 border-t border-border/60 ${
+              onExplain && yearRange !== undefined ? "sm:justify-between" : "sm:justify-end"
+            }`}
+          >
+            {onExplain && explainLabel && (
+              <button
+                type="button"
+                data-cursor-interactive
+                onClick={onExplain}
+                className="self-start px-3 py-1.5 rounded-full text-xs font-medium border border-accent/30 text-accent bg-accent-muted/80 hover:bg-accent/10 transition-all hover:shadow-soft whitespace-nowrap"
+              >
+                {explainLabel}
+              </button>
+            )}
+            {yearRange !== undefined && onYearRangeChange && (
+              <YearRangePills value={yearRange} onChange={onYearRangeChange} />
+            )}
+          </div>
         )}
       </div>
 

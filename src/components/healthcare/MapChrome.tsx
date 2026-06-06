@@ -47,8 +47,8 @@ export function MapChrome({
 
   return (
     <>
-      <div className="map-chrome-top absolute top-3 left-3 right-3 z-[500] flex flex-wrap gap-2 pointer-events-none">
-        <div className="map-chrome-search pointer-events-auto flex-1 min-w-[200px] max-w-md relative">
+      <div className="map-chrome-top absolute top-2 sm:top-3 left-2 sm:left-3 right-2 sm:right-3 z-[500] flex flex-col sm:flex-row flex-wrap gap-2 pointer-events-none">
+        <div className="map-chrome-search pointer-events-auto flex-1 min-w-0 w-full sm:min-w-[200px] sm:max-w-md relative">
           <label htmlFor="district-map-search" className="sr-only">
             {t("map.chrome.search")}
           </label>
@@ -110,6 +110,19 @@ export function MapChrome({
             </button>
           </div>
         )}
+
+        {mapView === "tripleLens" && (
+          <div className="map-chrome-legend-mobile pointer-events-none flex md:hidden flex-wrap gap-1.5 w-full">
+            <span className="inline-flex items-center gap-1 text-[9px] text-ink-muted bg-surface/90 px-2 py-1 rounded-full border border-border/60">
+              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: COMPOUND_GAP_COLOR }} />
+              {t("map.lens.tripleGap")}
+            </span>
+            <span className="inline-flex items-center gap-1 text-[9px] text-ink-muted bg-surface/90 px-2 py-1 rounded-full border border-border/60">
+              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: LENS_COLORS.weak }} />
+              {t("map.lens.weak")}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="map-chrome-controls absolute bottom-3 right-3 z-[500] flex flex-col gap-1.5 pointer-events-auto">
@@ -142,7 +155,7 @@ export function MapChrome({
       </div>
 
       {quickDistricts.length > 0 && mapView === "tripleLens" && (
-        <div className="map-chrome-quick absolute bottom-3 left-3 right-14 z-[500] pointer-events-auto overflow-x-auto">
+        <div className="map-chrome-quick absolute bottom-2 sm:bottom-3 left-2 sm:left-3 right-12 sm:right-14 z-[500] pointer-events-auto overflow-x-auto max-w-[calc(100%-3rem)]">
           <div className="flex gap-1.5 pb-0.5">
             <span className="shrink-0 self-center text-[9px] font-medium uppercase tracking-wider text-ink-faint px-1">
               {t("map.chrome.jump")}

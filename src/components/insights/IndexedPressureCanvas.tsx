@@ -132,22 +132,22 @@ export function IndexedPressureCanvas({ data }: IndexedPressureCanvasProps) {
 
   return (
     <div className="pressure-canvas card overflow-hidden border-border" data-cursor-interactive>
-      <div className="relative px-6 md:px-8 pt-7 pb-5 border-b border-border/80">
+      <div className="relative px-4 sm:px-6 md:px-8 pt-6 sm:pt-7 pb-5 border-b border-border/80">
         <div className="pressure-canvas-mesh absolute inset-0 pointer-events-none" aria-hidden />
-        <div className="relative flex flex-wrap items-end justify-between gap-6">
-          <div>
+        <div className="relative flex flex-col sm:flex-row sm:flex-wrap sm:items-end sm:justify-between gap-4 sm:gap-6">
+          <div className="min-w-0">
             <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-ink-faint mb-2">
               {t("charts.insights.pressureEyebrow")}
             </p>
-            <h3 className="font-serif text-2xl md:text-3xl text-ink tracking-tight">
+            <h3 className="font-serif text-xl sm:text-2xl md:text-3xl text-ink tracking-tight">
               {t("charts.insights.title")}
             </h3>
             <p className="text-sm text-ink-muted mt-2 max-w-lg leading-relaxed">
               {t("charts.insights.subtitle")}
             </p>
           </div>
-          <div className="text-right">
-            <p className="font-serif text-4xl md:text-5xl text-ink tabular-nums leading-none">
+          <div className="sm:text-right shrink-0">
+            <p className="font-serif text-3xl sm:text-4xl md:text-5xl text-ink tabular-nums leading-none">
               {year}
             </p>
             <p className="text-[10px] uppercase tracking-wider text-ink-faint mt-1.5">
@@ -177,29 +177,52 @@ export function IndexedPressureCanvas({ data }: IndexedPressureCanvasProps) {
               const value = row?.[metric.key] ?? BASELINE;
               const delta = value - BASELINE;
 
+              const labelButton = (
+                <button
+                  type="button"
+                  data-cursor-interactive
+                  onClick={() => setHidden((p) => toggleSet(p, metric.key))}
+                  className={`text-left rounded-lg px-2 py-1.5 -mx-2 transition-colors min-w-0 ${
+                    visible ? "hover:bg-canvas/80" : ""
+                  }`}
+                >
+                  <span
+                    className="inline-block w-2 h-2 rounded-full mr-2 align-middle shrink-0"
+                    style={{ backgroundColor: metric.color }}
+                  />
+                  <span className="text-xs font-medium text-ink-muted">{metric.label}</span>
+                </button>
+              );
+
+              const valueBlock = (
+                <div className="text-right tabular-nums shrink-0">
+                  <AnimatedNumber value={value} size="sm" className="text-ink block leading-none" />
+                  <p
+                    className="text-[10px] font-medium mt-1"
+                    style={{ color: delta >= 0 ? metric.color : "#9C9890" }}
+                  >
+                    {delta >= 0 ? `+${delta}` : delta}{" "}
+                    <span className="hidden md:inline">{t("charts.insights.vsBaseline")}</span>
+                  </p>
+                </div>
+              );
+
               return (
                 <div
                   key={metric.key}
-                  className={`grid grid-cols-[7.5rem_1fr_4.5rem] md:grid-cols-[9rem_1fr_5.5rem] gap-3 md:gap-5 items-center transition-opacity duration-300 ${
+                  className={`transition-opacity duration-300 ${
                     visible ? "opacity-100" : "opacity-25"
                   }`}
                 >
-                  <button
-                    type="button"
-                    data-cursor-interactive
-                    onClick={() => setHidden((p) => toggleSet(p, metric.key))}
-                    className={`text-left rounded-lg px-2 py-1.5 -mx-2 transition-colors ${
-                      visible ? "hover:bg-canvas/80" : ""
-                    }`}
-                  >
-                    <span
-                      className="inline-block w-2 h-2 rounded-full mr-2 align-middle"
-                      style={{ backgroundColor: metric.color }}
-                    />
-                    <span className="text-xs font-medium text-ink-muted">{metric.label}</span>
-                  </button>
+                  <div className="flex md:hidden items-center justify-between gap-3 mb-2">
+                    {labelButton}
+                    {valueBlock}
+                  </div>
 
-                  <div className="relative h-[72px] rounded-lg overflow-hidden bg-canvas/50 border border-border/60">
+                  <div className="grid grid-cols-1 md:grid-cols-[9rem_1fr_5.5rem] gap-2 md:gap-5 items-center">
+                    <div className="hidden md:block">{labelButton}</div>
+
+                  <div className="relative h-[64px] sm:h-[72px] rounded-lg overflow-hidden bg-canvas/50 border border-border/60 min-w-0">
                     <svg
                       viewBox={`0 0 ${VIEW_W} ${LANE_H}`}
                       preserveAspectRatio="none"
@@ -258,18 +281,7 @@ export function IndexedPressureCanvas({ data }: IndexedPressureCanvasProps) {
                     </svg>
                   </div>
 
-                  <div className="text-right tabular-nums">
-                    <AnimatedNumber
-                      value={value}
-                      size="sm"
-                      className="text-ink block leading-none"
-                    />
-                    <p
-                      className="text-[10px] font-medium mt-1"
-                      style={{ color: delta >= 0 ? metric.color : "#9C9890" }}
-                    >
-                      {delta >= 0 ? `+${delta}` : delta} {t("charts.insights.vsBaseline")}
-                    </p>
+                  <div className="hidden md:block">{valueBlock}</div>
                   </div>
                 </div>
               );
@@ -283,7 +295,7 @@ export function IndexedPressureCanvas({ data }: IndexedPressureCanvasProps) {
         </div>
       </div>
 
-      <div className="px-6 md:px-8 py-5 border-t border-border/80 bg-canvas/35">
+      <div className="px-4 sm:px-6 md:px-8 py-4 sm:py-5 border-t border-border/80 bg-canvas/35">
         <p className="text-sm text-ink leading-relaxed">
           <span className="font-medium tabular-nums">{year}</span>
           <span className="text-ink-faint mx-2">·</span>

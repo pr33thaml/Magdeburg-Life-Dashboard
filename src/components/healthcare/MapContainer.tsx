@@ -150,14 +150,14 @@ export function MapContainer({
 
   if (!mounted) {
     return (
-      <div className="map-stage map-stage--loading w-full h-[520px] md:h-[600px] rounded-2xl border border-border bg-canvas flex items-center justify-center">
+      <div className="map-stage map-stage--loading w-full h-[min(58vh,440px)] sm:h-[500px] md:h-[600px] rounded-xl sm:rounded-2xl border border-border bg-canvas flex items-center justify-center">
         <p className="text-sm text-ink-muted">{t("map.loading")}</p>
       </div>
     );
   }
 
   return (
-    <div className="map-stage relative w-full h-[520px] md:h-[600px] rounded-2xl overflow-hidden border border-border shadow-elevated">
+    <div className="map-stage relative w-full h-[min(58vh,440px)] sm:h-[500px] md:h-[600px] rounded-xl sm:rounded-2xl overflow-hidden border border-border shadow-elevated">
       <MapChrome
         districts={districts}
         selectedDistrict={selectedDistrict}

@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import type { AccessLensDistrict, DistrictSummary, LensId, RiskDistrict } from "@/lib/types";
 import { useFormatNumber } from "@/lib/i18n/useFormatNumber";
 import { useTranslations } from "@/lib/i18n/LocaleProvider";
 import { RISK_LEVEL_STYLES } from "@/lib/risk-styles";
 import { LENS_COLORS, isCompoundGap, LENS_IDS, gapFraction } from "@/lib/access-lens";
+import { GapExplainerSheet } from "./GapExplainerSheet";
 import { LensPrism } from "./LensPrism";
 
 interface DistrictPanelProps {
@@ -13,6 +15,8 @@ interface DistrictPanelProps {
   lens?: AccessLensDistrict;
   activeLenses?: Set<LensId>;
   showLens?: boolean;
+  busStopRadiusKm?: number;
+  magdeburgBusStops?: number;
 }
 
 function levelLabel(t: (k: string) => string, level: string): string {
@@ -25,13 +29,16 @@ export function DistrictPanel({
   lens,
   activeLenses = new Set(["physicians", "transport", "transit"]),
   showLens = false,
+  busStopRadiusKm,
+  magdeburgBusStops,
 }: DistrictPanelProps) {
   const t = useTranslations();
   const { formatNumber, formatDecimal } = useFormatNumber();
+  const [explainerOpen, setExplainerOpen] = useState(false);
 
   if (!district) {
     return (
-      <div className="h-full min-h-[480px] md:min-h-[560px] flex flex-col justify-center rounded-lg border border-dashed border-border bg-canvas/50 p-6">
+      <div className="h-full min-h-[220px] sm:min-h-[320px] lg:min-h-[480px] flex flex-col justify-center rounded-lg border border-dashed border-border bg-canvas/50 p-4 sm:p-6">
         <p className="text-sm font-medium text-ink mb-2">{t("map.panel.title")}</p>
         <p className="text-sm text-ink-muted leading-relaxed">{t("map.panel.hint")}</p>
       </div>
@@ -42,7 +49,7 @@ export function DistrictPanel({
   const gap = lens && showLens ? gapFraction(lens, activeLenses) : null;
 
   return (
-    <div className="h-full min-h-[480px] md:min-h-[560px] rounded-lg border border-border bg-surface p-6 flex flex-col animate-fade-in">
+    <div className="h-full min-h-0 lg:min-h-[480px] rounded-lg border border-border bg-surface p-4 sm:p-6 flex flex-col animate-fade-in">
       <p className="text-xs font-medium uppercase tracking-wider text-ink-muted mb-1">
         {t("map.panel.selected")}
       </p>
@@ -86,7 +93,7 @@ export function DistrictPanel({
               id === "physicians"
                 ? `${formatDecimal(lens.physiciansPer1000, 2)} / 1k`
                 : id === "transport"
-                  ? `~${formatNumber(lens.transportDemand)} (${formatDecimal(lens.transportPer1000, 1)} / 1k)`
+                  ? `${formatDecimal(district.elderlyPct ?? 0, 1)}%`
                   : `${formatNumber(lens.busStopsNearby)} ${t("map.lens.popup.transitShort")}`;
 
             return (
@@ -110,7 +117,27 @@ export function DistrictPanel({
               </div>
             );
           })}
+          <button
+            type="button"
+            data-cursor-interactive
+            onClick={() => setExplainerOpen(true)}
+            className="w-full mt-2 px-4 py-2.5 rounded-full text-sm font-medium border border-accent/30 text-accent bg-accent-muted/80 hover:bg-accent/10 transition-all hover:shadow-soft"
+          >
+            {t("map.gapExplainer.open")}
+          </button>
         </div>
+      )}
+
+      {showLens && lens && district && (
+        <GapExplainerSheet
+          open={explainerOpen}
+          onClose={() => setExplainerOpen(false)}
+          district={district}
+          lens={lens}
+          activeLenses={activeLenses}
+          busStopRadiusKm={busStopRadiusKm}
+          magdeburgBusStops={magdeburgBusStops}
+        />
       )}
 
       <div className="space-y-5 flex-1">

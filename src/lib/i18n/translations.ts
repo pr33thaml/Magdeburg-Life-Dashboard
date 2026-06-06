@@ -6,9 +6,9 @@ interface Dict {
 
 const en: Dict = {
   meta: {
-    title: "MAGmagdeburg — Healthcare & Population Intelligence",
+    title: "MAGmagdeburg · Healthcare & Population Dashboard",
     description:
-      "How Magdeburg is growing, caring, and adapting — an open-data story about population and healthcare in the city.",
+      "Population, rescue, and healthcare in Magdeburg. An open-data dashboard built on KISS-MD.",
   },
   header: {
     tagline: "Stadt Magdeburg · Open Data",
@@ -23,9 +23,10 @@ const en: Dict = {
     dependency: "Dependency",
   },
   hero: {
-    eyebrow: "Healthcare & Population Intelligence",
-    title: "Magdeburg is growing — and caring for every district",
-    lead: "An open-data look at how the city is evolving: more residents, a strong rescue network, and healthcare access that can be improved where it matters most.",
+    eyebrow: "KISS-MD open data",
+    titleLine1: "Magdeburg is growing,",
+    titleLine2: "caring for every district..",
+    lead: "Population trends, rescue deployments, and physician access by neighbourhood. Plain numbers from the city's own datasets.",
   },
   sections: {
     overview: {
@@ -104,7 +105,7 @@ const en: Dict = {
       "Smart investment works best when it's local — these priority districts show where to start.",
   },
   footer: {
-    subtitle: "Healthcare & Population Intelligence Dashboard",
+    subtitle: "Healthcare & Population Dashboard",
     dataSource: "Data source",
     lastUpdated: "Last updated",
   },
@@ -143,6 +144,106 @@ const en: Dict = {
         in: "Migration in",
         out: "Migration out",
         net: "Net migration",
+      },
+      naturalDeficit: {
+        eyebrow: "Natural balance",
+        subtitle: "Deaths have outpaced births every year since 2010 — the shaded gap is the annual deficit.",
+        deathsPerBirth: "{ratio}× more deaths than births in the selected year",
+        gapLabel: "Deficit gap",
+        everyYear: "Natural change stays negative across the full series — migration must cover the gap.",
+        yearInsight:
+          "In {year}, {deaths} deaths vs {births} births left a {gap}-person natural shortfall.",
+        slideYears: "Slide or tap a year to inspect the gap",
+      },
+      migrationFlow: {
+        eyebrow: "Migration engine",
+        subtitle: "Arrivals rise above, departures fall below — net balance drives headline growth.",
+        divergingLabel: "Arrivals vs departures",
+        peakYear: "Peak arrivals",
+        peakNote: "Peak in-migration year in this range — net +{net} that year.",
+        yearInsight: "{year}: +{in} arrivals, {out} departures → net {net}.",
+        offsetsDeficit:
+          "Net migration of +{net} offsets the natural deficit of {natural} — growth without migration would stall.",
+        slideYears: "Slide or tap a year to compare flows",
+        netOn: "Net line on",
+        netOff: "Show net line",
+      },
+      explainer: {
+        open: "Understand this",
+        close: "Close",
+        eyebrow: "Population story",
+        tapSection: "Pick a topic — the note draws in",
+        yearContext: "Figures for {year} unless you pin another year above",
+        flipToMethod: "Where this data comes from →",
+        flipBack: "← Back to notes",
+        methodEyebrow: "Behind the chart",
+        methodTitle: "KISS-MD population data",
+        methodSource:
+          "All four views pull from Magdeburg open-data Excel tables, aggregated to calendar years in our pipeline.",
+        titles: {
+          growth: "Reading population growth",
+          age: "Reading average age",
+          natural: "Reading births vs deaths",
+          migration: "Reading migration flows",
+        },
+        sections: {
+          headline: "Headline total",
+          brush: "Brush & pin",
+          equation: "Growth equation",
+          average: "Mean age",
+          plateau: "Age plateau",
+          care: "Care link",
+          gap: "Deficit gap",
+          births: "Births line",
+          deaths: "Deaths line",
+          arrivals: "Arrivals",
+          departures: "Departures",
+          net: "Net balance",
+          offset: "Offsets deficit",
+        },
+        growth: {
+          headline:
+            "{population} residents in {year} — the green area is Hauptwohnsitz population from KISS-MD, year on year.",
+          brush:
+            "Drag the brush under the chart to zoom a decade, or click a year to pin it — the focus panel updates with that snapshot.",
+          equation:
+            "Population change = natural balance ({natural}) + net migration ({net}). In {year} migration wins — see the two charts below.",
+        },
+        age: {
+          average:
+            "Average age {age} in {year} — the mean across all residents, not median. One slow line for the whole city.",
+          plateau:
+            "The curve flattens near 45 after 2012 — fewer young arrivals and stable older cohorts keep the mean from climbing sharply.",
+          care:
+            "A city averaging 45+ means care and rescue systems plan for longer lives — this feeds the healthcare map below.",
+        },
+        natural: {
+          gap:
+            "The red shaded band between the lines is the annual deficit — deaths ({deaths}) minus births ({births}) in {year}, totalling {natural} natural change.",
+          births:
+            "Blue births line — {births} babies registered in {year}. It stays far below deaths every year in this series.",
+          deaths:
+            "Red deaths line — {deaths} deaths in {year}. The gap above births is why natural change stays negative.",
+        },
+        migration: {
+          arrivals:
+            "{in} people moved to Magdeburg in {year} — green bars rise above the centre line.",
+          departures:
+            "{out} people left in {year} — grey bars fall below the line. Arrivals still dominate.",
+          net:
+            "Net migration {net} in {year} — arrivals minus departures. This is what pushes the headline population up.",
+          offset:
+            "Net +{net} vs natural {natural} in {year} — migration more than covers the birth-death gap, so the city still grows.",
+        },
+        method: {
+          growth:
+            "Entwicklung der Hauptwohnsitzbevölkerung.xlsx — official resident population totals per year.",
+          age: "Hauptwohnsitzbevölkerung nach ausgewählten Indikatoren.xlsx — city-wide average age.",
+          natural:
+            "Geburten und Sterbefälle.xlsx — annual births and deaths summed to natural change.",
+          migration:
+            "Wanderungen.xlsx — migration in, out, and net balance by calendar year.",
+        },
       },
     },
     emergency: {
@@ -189,6 +290,38 @@ const en: Dict = {
         deploymentsIn: "emergency deployments in",
         slideYears: "Slide through years",
       },
+      explainer: {
+        open: "What's happening here?",
+        close: "Close",
+        title: "Reading the mix",
+        eyebrow: "Deployment story",
+        tapCategory: "Pick a category — the note draws in",
+        yearContext: "{total} deployments in {year}",
+        flipToMethod: "Where this data comes from →",
+        flipBack: "← Back to notes",
+        methodEyebrow: "Behind the chart",
+        methodTitle: "How deployments are counted",
+        methodIntro:
+          "Each bar is a slice of Magdeburg's annual rescue statistics from KISS-MD. Slide the year below the chart to see how the mix shifts over time.",
+        methodSource:
+          "Source: Rettungsdienst statistics — monthly deployments summed into calendar years.",
+        method: {
+          medical: "Notarzt — emergency physician vehicles dispatched to acute, life-threatening calls.",
+          transport: "Krankentransport — patient moves between homes, clinics, and hospitals; usually the largest share.",
+          rescue: "Rettung — technical rescue and other ground rescue operations beyond transport.",
+          air: "Luftrettung — helicopter deployments for critical cases; tiny share, high stakes.",
+        },
+        category: {
+          medical:
+            "{count} Notarzt deployments ({pct} of {total} in {year}) — emergency doctors sent when minutes matter.",
+          transport:
+            "{count} patient transports ({pct}) — the backbone of the system, moving people between care sites every day.",
+          rescue:
+            "{count} rescue operations ({pct}) — ground rescue beyond transport, from extraction to on-scene response.",
+          air:
+            "Only {count} air rescue flights ({pct}) — rare in the annual total, but vital when roads are too slow.",
+        },
+      },
       categories: {
         medical: "Emergency Medical",
         transport: "Patient Transport",
@@ -217,6 +350,80 @@ const en: Dict = {
         "Emergency demand leads at {emergency} index ({emergencyDelta} vs 2010) — physicians at {physicians} ({physiciansDelta})",
       divergenceAge:
         "Aging pressure steady at {age} index ({ageDelta}) — physicians at {physicians}, emergency at {emergency}",
+      citizenLive: "New residents arriving",
+      physicianGap: {
+        sameCity: "Same city · two realities",
+        gap: "gap",
+        doctors: "doctors",
+        per1k: "physicians per 1,000 residents",
+      },
+      agingCommunity: {
+        live: "Average age through the years",
+        yrs: "yrs",
+        year: "Year",
+      },
+      reactor: {
+        eyebrow: "Pulling it together",
+        title: "What keeps the city growing",
+        subtitle:
+          "Births, deaths, migration, and care pressure — play through 15 years to see which force carried Magdeburg forward.",
+        explainer: {
+          open: "What's happening here?",
+          close: "Close",
+          eyebrow: "Closing picture",
+          title: "Reading the balance",
+          tapSection: "Pick a topic — the note draws in",
+          yearContext: "Snapshot for {year} — scrub the slider to update",
+          flipToMethod: "Where this data comes from →",
+          flipBack: "← Back to notes",
+          methodEyebrow: "Behind the chart",
+          methodTitle: "How the closing picture is built",
+          methodIntro:
+            "Population stats, migration flows, rescue deployments, and physician counts each come from KISS-MD. We index emergency and physician supply to 2010 = 100 so you can compare pressure streams on one card.",
+          methodSource:
+            "Sources: population & migration tables, Rettungsdienst statistics, and healthcare supply — aggregated to calendar years in our pipeline.",
+          sections: {
+            balance: "The scale",
+            stats: "Four numbers",
+            care: "Care tension",
+            timeline: "Play & scrub",
+          },
+          balance:
+            "The beam tilts toward whichever side weighs more that year. Left = natural change ({natural}); right = net migration ({migration}). When migration wins, the scale tips right — that's how the city offsets its birth-death deficit.",
+          stats:
+            "Four headline figures for {year}: natural change {natural}, net migration {migration}, year-on-year population shift {popDelta}, and total residents {population}.",
+          care:
+            "Rescue deployments and physician supply, each indexed to 2010 = 100. In {year}: emergency {emerg}, physicians {docs}, tension gap {gap}. Positive gap means supply leads; negative means demand pulls ahead.",
+          timeline:
+            "Hit Play to march year by year, or drag the slider. The verdict line below summarizes what dominated that year — growth, outflow, or care tension.",
+        },
+        play: "Play timeline",
+        pause: "Pause",
+        scrubHint: "scrub year",
+        popDelta: "Year-on-year change",
+        balanceLabel: "Population balance",
+        careLabel: "Care supply vs demand",
+        careGap: "Care tension",
+        careSupplyLead: "Physician supply leads by {gap} index points — capacity is ahead of rescue load.",
+        careDemandLead: "Rescue demand leads by {gap} index points — deployments outpace supply growth.",
+        careEvenLead: "Physician supply and rescue demand sit at the same index — balanced at the 2010 baseline.",
+        careTension: {
+          balanced: "Balanced at baseline",
+          supplyLeads: "Supply pulling ahead",
+          demandLeads: "Demand pulling ahead",
+          baseline: "2010 baseline = index 100",
+        },
+        verdictGrowth:
+          "{year}: migration ({migration}) absorbs the natural deficit ({natural}) — population grew by {popDelta} that year.",
+        verdictOutflow:
+          "{year}: rare net outflow ({net}) — without migration cushion, population slipped toward {pop}.",
+        verdictCareDemand:
+          "{year}: rescue index at {emerg} vs physicians at {docs} — a {gap}-point care tension worth watching.",
+        focusLabel: "Where to focus next",
+        tripleGap: "{district} — triple access gap ({count} district flagged)",
+        priorityDistrict: "{district} — highest care priority in the city",
+        exploreMap: "Explore on map →",
+      },
     },
   },
   map: {
@@ -226,14 +433,14 @@ const en: Dict = {
     lens: {
       eyebrow: "Triple lens",
       title: "Access isn't one thing",
-      lead: "Toggle three lenses — physicians, patient transport demand, and nearby transit. Districts glow when every active lens is weak.",
+      lead: "Toggle three lenses — physicians, elderly population (65+), and nearby transit. Districts glow when every active lens is weak.",
       tripleLens: "Triple lens",
       compoundLegend: "Triple gap · {count} districts",
       weak: "Weak on active lenses",
       mixed: "Mixed",
       strong: "Strong access",
       tripleGap: "Triple gap",
-      meta: "Transport proxy from {transport} city-wide patient transports · {stops} Magdeburg stops · {radius} km radius",
+      meta: "Elderly share (65+) from KISS-MD · {stops} Magdeburg stops within {radius} km",
       rankingTitle: "Compound access index",
       rankingHint: "Each prism refracts three lenses of access. Where every facet is weak, districts converge into a triple gap.",
       indexEyebrow: "Access index",
@@ -249,13 +456,13 @@ const en: Dict = {
       panelTitle: "Lens breakdown",
       toggles: {
         physicians: "Physicians",
-        transport: "Transport demand",
+        transport: "Elderly population (65+)",
         transit: "Transit stops",
       },
       levels: { weak: "Weak", medium: "Mixed", strong: "Strong" },
       popup: {
         physicians: "physicians / 1k",
-        transport: "patient transports / yr (est.)",
+        transport: "share of residents aged 65+",
         transit: "bus/tram stops within radius",
         transitShort: "stops nearby",
       },
@@ -297,6 +504,52 @@ const en: Dict = {
       vulnerability: "Care priority",
       riskRank: "priority",
     },
+    gapExplainer: {
+      open: "Understand this gap",
+      tapWedge: "Click a coloured wedge — the note draws in",
+      prismAria: "Interactive gap prism — click a wedge to read its note",
+      close: "Close",
+      eyebrow: "Gap story",
+      gapScore: "{weak} of {total} lenses are weak",
+      tripleGapNote:
+        "{district} sits in the triple-gap zone — weak on every active lens at once.",
+      flipToMethod: "How this works →",
+      flipBack: "← Back to district notes",
+      methodEyebrow: "Behind the lens",
+      methodTitle: "How gaps are built",
+      tertile:
+        "Each lens splits all Magdeburg districts into thirds — weak, mixed, strong — using citywide cutoffs, not a fixed threshold.",
+      mapTitle: "The map",
+      mapBody:
+        "Leaflet renders CARTO/OSM tiles as a backdrop only. District dots sit at hand-placed centroids — not OSM boundaries. Bubble size follows population; colour follows the active view.",
+      dataTitle: "District data",
+      dataBody:
+        "Population, physicians, pharmacies, and 65+ share come from KISS-MD Excel files, joined by district name in our pipeline. Transit stops are counted from ÖV CSV coordinates within a radius of each centroid.",
+      lensesTitle: "The three lenses",
+      lensMethod: {
+        physicians: "Physicians per 1,000 residents — from Ärzte und Apotheken + population tables.",
+        elderly:
+          "Share aged 65+ shapes a demand proxy (population × age weight). Districts with higher modeled demand land in the weak third.",
+        transit: "Bus/tram stops within {radius} km of the district centroid — from Magdeburg ÖV open data.",
+      },
+      lens: {
+        physicians: {
+          weak: "Only {value} physicians here — below the city’s lower third. Fewer doctors per resident than most districts.",
+          medium: "{value} sits in the middle band — not scarce, not abundant, compared with Magdeburg as a whole.",
+          strong: "{value} — among the better-supplied districts for physician density.",
+        },
+        transport: {
+          weak: "{value} aged 65+ — a heavier older share pushes modeled care demand into the city’s upper third.",
+          medium: "{value} aged 65+ — middle-of-the-pack demand pressure for Magdeburg.",
+          strong: "{value} aged 65+ — a younger profile, so demand pressure reads lower on this lens.",
+        },
+        transit: {
+          weak: "{value} stops within {radius} km — harder to reach without a car.",
+          medium: "{value} stops nearby — middling transit reach for Magdeburg.",
+          strong: "{value} stops in the radius — relatively well connected by bus and tram.",
+        },
+      },
+    },
   },
   closing: {
     eyebrow: "Inequality lens",
@@ -310,7 +563,7 @@ const en: Dict = {
     elderly: "elderly",
     tripleGap: "Triple-gap district",
     tripleGapBody:
-      "Weak on physicians, patient transport proxy, and bus access — {ratio}/1k doctors with only {stops} nearby stops.",
+      "Weak on physicians, elderly population, and bus access — {ratio}/1k doctors with only {stops} nearby stops.",
     scaleStory: "Scale × vulnerability",
     scaleBody:
       "{residents} residents, {elderly}% elderly, yet only {ratio} physicians per 1,000 — priority #1 by combined need.",
@@ -409,9 +662,9 @@ const en: Dict = {
 
 const de: Dict = {
   meta: {
-    title: "MAGmagdeburg — Gesundheits- & Bevölkerungsanalyse",
+    title: "MAGmagdeburg · Gesundheits- & Bevölkerungs-Dashboard",
     description:
-      "Wie Magdeburg wächst, versorgt und sich weiterentwickelt — eine Open-Data-Story über Bevölkerung und Gesundheit.",
+      "Bevölkerung, Rettung und Gesundheit in Magdeburg. Ein Open-Data-Dashboard auf Basis von KISS-MD.",
   },
   header: {
     tagline: "Stadt Magdeburg · Open Data",
@@ -426,9 +679,10 @@ const de: Dict = {
     dependency: "Abhängigkeit",
   },
   hero: {
-    eyebrow: "Gesundheits- & Bevölkerungsanalyse",
-    title: "Magdeburg wächst — und versorgt jeden Stadtteil",
-    lead: "Open Data zeigt, wie sich die Stadt entwickelt: mehr Einwohner, ein starkes Rettungsnetz und Gesundheitsversorgung, die dort ausgebaut werden kann, wo sie am meisten hilft.",
+    eyebrow: "KISS-MD Open Data",
+    titleLine1: "Magdeburg wächst,",
+    titleLine2: "Versorgung in jedem Stadtteil..",
+    lead: "Bevölkerungstrends, Rettungseinsätze und Ärztedichte nach Stadtteil. Zahlen aus den offiziellen Datensätzen der Stadt.",
   },
   sections: {
     overview: {
@@ -507,7 +761,7 @@ const de: Dict = {
       "Kluge Investition wirkt am besten lokal — diese Prioritäts-Stadtteile zeigen, wo man anfangen kann.",
   },
   footer: {
-    subtitle: "Dashboard für Gesundheits- & Bevölkerungsanalyse",
+    subtitle: "Gesundheits- & Bevölkerungs-Dashboard",
     dataSource: "Datenquelle",
     lastUpdated: "Zuletzt aktualisiert",
   },
@@ -546,6 +800,106 @@ const de: Dict = {
         in: "Zuzug",
         out: "Wegzug",
         net: "Netto-Migration",
+      },
+      naturalDeficit: {
+        eyebrow: "Natürliche Bilanz",
+        subtitle: "Sterbefälle übersteigen Geburten seit 2010 — die Schattierung zeigt das jährliche Defizit.",
+        deathsPerBirth: "{ratio}× mehr Sterbefälle als Geburten im gewählten Jahr",
+        gapLabel: "Defizit-Lücke",
+        everyYear: "Die natürliche Veränderung bleibt in der gesamten Reihe negativ — Zuwanderung muss die Lücke schließen.",
+        yearInsight:
+          "{year}: {deaths} Sterbefälle vs. {births} Geburten — ein natürliches Defizit von {gap}.",
+        slideYears: "Schieberegler oder Jahr antippen",
+      },
+      migrationFlow: {
+        eyebrow: "Migration als Motor",
+        subtitle: "Zuzug nach oben, Wegzug nach unten — die Nettobilanz treibt das Gesamtwachstum.",
+        divergingLabel: "Zuzug vs. Wegzug",
+        peakYear: "Höchster Zuzug",
+        peakNote: "Stärkstes Zuzugsjahr in diesem Zeitraum — Netto +{net}.",
+        yearInsight: "{year}: +{in} Zuzug, {out} Wegzug → Netto {net}.",
+        offsetsDeficit:
+          "Netto-Migration von +{net} gleicht das natürliche Defizit von {natural} aus — ohne Zuwanderung würde das Wachstum stocken.",
+        slideYears: "Schieberegler oder Jahr antippen",
+        netOn: "Netto-Linie an",
+        netOff: "Netto-Linie einblenden",
+      },
+      explainer: {
+        open: "Das hier verstehen",
+        close: "Schließen",
+        eyebrow: "Bevölkerungs-Story",
+        tapSection: "Thema wählen — die Notiz zeichnet sich ein",
+        yearContext: "Zahlen für {year}, sofern oben kein anderes Jahr fixiert ist",
+        flipToMethod: "Woher die Daten kommen →",
+        flipBack: "← Zurück zu den Notizen",
+        methodEyebrow: "Hinter der Grafik",
+        methodTitle: "KISS-MD-Bevölkerungsdaten",
+        methodSource:
+          "Alle vier Ansichten stammen aus Magdeburger Open-Data-Excel-Tabellen, in unserer Pipeline zu Kalenderjahren aggregiert.",
+        titles: {
+          growth: "Bevölkerungswachstum lesen",
+          age: "Durchschnittsalter lesen",
+          natural: "Geburten vs. Sterbefälle lesen",
+          migration: "Wanderungsströme lesen",
+        },
+        sections: {
+          headline: "Gesamtbevölkerung",
+          brush: "Brush & Fixieren",
+          equation: "Wachstumsgleichung",
+          average: "Mittelalter",
+          plateau: "Altersplateau",
+          care: "Versorgungsbezug",
+          gap: "Defizit-Lücke",
+          births: "Geburtenlinie",
+          deaths: "Sterbelinie",
+          arrivals: "Zuzug",
+          departures: "Wegzug",
+          net: "Nettobilanz",
+          offset: "Gleicht Defizit aus",
+        },
+        growth: {
+          headline:
+            "{population} Einwohner in {year} — die grüne Fläche ist die Hauptwohnsitzbevölkerung aus KISS-MD, Jahr für Jahr.",
+          brush:
+            "Brush unter der Grafik ziehen zum Zoomen, oder Jahr anklicken zum Fixieren — das Fokus-Panel zeigt den Snapshot.",
+          equation:
+            "Bevölkerungsänderung = natürliche Bilanz ({natural}) + Netto-Migration ({net}). In {year} gewinnt die Migration — siehe die beiden Grafiken unten.",
+        },
+        age: {
+          average:
+            "Durchschnittsalter {age} in {year} — der Mittelwert aller Einwohner, nicht der Median. Eine langsame Linie für die ganze Stadt.",
+          plateau:
+            "Die Kurve flacht nach 2012 bei etwa 45 ab — weniger junge Zuzüge und stabile ältere Kohorten halten den Mittelwert.",
+          care:
+            "Eine Stadt mit Ø 45+ plant Versorgung für längere Leben — das speist die Gesundheitskarte weiter unten.",
+        },
+        natural: {
+          gap:
+            "Das rote Band zwischen den Linien ist das jährliche Defizit — {deaths} Sterbefälle minus {births} Geburten in {year}, natürliche Veränderung {natural}.",
+          births:
+            "Blaue Geburtenlinie — {births} Geburten in {year}. Sie bleibt in der gesamten Reihe unter den Sterbefällen.",
+          deaths:
+            "Rote Sterbelinie — {deaths} Sterbefälle in {year}. Die Lücke über den Geburten erklärt die negative natürliche Bilanz.",
+        },
+        migration: {
+          arrivals:
+            "{in} Zuzüge nach Magdeburg in {year} — grüne Balken über der Mittellinie.",
+          departures:
+            "{out} Wegzüge in {year} — graue Balken unter der Linie. Zuzug dominiert weiterhin.",
+          net:
+            "Netto-Migration {net} in {year} — Zuzug minus Wegzug. Das treibt die Gesamtbevölkerung nach oben.",
+          offset:
+            "Netto +{net} vs. natürlich {natural} in {year} — Migration deckt die Geburten-Sterbefälle-Lücke mehr als ab.",
+        },
+        method: {
+          growth:
+            "Entwicklung der Hauptwohnsitzbevölkerung.xlsx — offizielle Einwohnerzahlen pro Jahr.",
+          age: "Hauptwohnsitzbevölkerung nach ausgewählten Indikatoren.xlsx — stadtweites Durchschnittsalter.",
+          natural:
+            "Geburten und Sterbefälle.xlsx — jährliche Geburten und Sterbefälle zur natürlichen Veränderung.",
+          migration:
+            "Wanderungen.xlsx — Zuzug, Wegzug und Netto-Migration pro Kalenderjahr.",
+        },
       },
     },
     emergency: {
@@ -592,6 +946,38 @@ const de: Dict = {
         deploymentsIn: "Rettungseinsätze im Jahr",
         slideYears: "Durch die Jahre schieben",
       },
+      explainer: {
+        open: "Was passiert hier?",
+        close: "Schließen",
+        title: "Den Mix lesen",
+        eyebrow: "Einsatz-Story",
+        tapCategory: "Kategorie wählen — die Notiz zeichnet sich ein",
+        yearContext: "{total} Einsätze im Jahr {year}",
+        flipToMethod: "Woher die Daten kommen →",
+        flipBack: "← Zurück zu den Notizen",
+        methodEyebrow: "Hinter der Grafik",
+        methodTitle: "Wie Einsätze gezählt werden",
+        methodIntro:
+          "Jeder Balken ist ein Anteil der jährlichen Rettungsstatistik aus KISS-MD. Jahr unter der Grafik schieben, um den Mix über die Zeit zu sehen.",
+        methodSource:
+          "Quelle: Rettungsdienst-Statistik — monatliche Einsätze zu Kalenderjahren summiert.",
+        method: {
+          medical: "Notarzt — Einsatzfahrzeuge mit Notärzten bei akuten, lebensbedrohlichen Notfällen.",
+          transport: "Krankentransport — Fahrten zwischen Zuhause, Klinik und Krankenhaus; meist der größte Anteil.",
+          rescue: "Rettung — bodengebundene Rettungseinsätze jenseits des Transports.",
+          air: "Luftrettung — Hubschrauber bei kritischen Fällen; kleiner Anteil, große Bedeutung.",
+        },
+        category: {
+          medical:
+            "{count} Notarzt-Einsätze ({pct} von {total} in {year}) — Notärzte, wenn jede Minute zählt.",
+          transport:
+            "{count} Krankentransporte ({pct}) — das Rückgrat des Systems, tägliche Fahrten zwischen Versorgungsorten.",
+          rescue:
+            "{count} Rettungseinsätze ({pct}) — Bodenrettung über Transport hinaus, von Bergung bis Einsatz vor Ort.",
+          air:
+            "Nur {count} Luftrettungseinsätze ({pct}) — selten in der Jahressumme, aber entscheidend wenn Straßen zu langsam sind.",
+        },
+      },
       categories: {
         medical: "Notfallmedizin",
         transport: "Patiententransport",
@@ -620,6 +1006,83 @@ const de: Dict = {
         "Rettungsnachfrage führt bei Index {emergency} ({emergencyDelta} vs. 2010) — Ärzte bei {physicians} ({physiciansDelta})",
       divergenceAge:
         "Alterungsdruck stabil bei Index {age} ({ageDelta}) — Ärzte bei {physicians}, Rettung bei {emergency}",
+      citizenLive: "Neue Einwohner kommen an",
+      physicianGap: {
+        sameCity: "Gleiche Stadt · zwei Realitäten",
+        gap: "Lücke",
+        doctors: "Ärzte",
+        per1k: "Ärzte pro 1.000 Einwohner",
+      },
+      agingCommunity: {
+        live: "Durchschnittsalter im Zeitverlauf",
+        yrs: "Jahre",
+        year: "Jahr",
+      },
+      reactor: {
+        eyebrow: "Alles zusammen",
+        title: "Was die Stadt wachsen lässt",
+        subtitle:
+          "Geburten, Sterbefälle, Zuwanderung und Versorgungsdruck — 15 Jahre abspielen und sehen, welche Kraft Magdeburg trägt.",
+        explainer: {
+          open: "Was passiert hier?",
+          close: "Schließen",
+          eyebrow: "Schlussbild",
+          title: "Die Bilanz lesen",
+          tapSection: "Thema wählen — die Notiz zeichnet sich ein",
+          yearContext: "Stand {year} — Schieberegler aktualisiert die Werte",
+          flipToMethod: "Woher die Daten kommen →",
+          flipBack: "← Zurück zu den Notizen",
+          methodEyebrow: "Hinter der Grafik",
+          methodTitle: "Wie das Schlussbild entsteht",
+          methodIntro:
+            "Bevölkerung, Migration, Rettungseinsätze und Ärzteanzahl stammen aus KISS-MD. Rettung und Ärzteangebot sind auf 2010 = 100 indiziert, damit sich die Druckströme auf einer Karte vergleichen lassen.",
+          methodSource:
+            "Quellen: Bevölkerungs- und Migrationstabellen, Rettungsstatistik und Versorgungsdaten — in unserer Pipeline zu Kalenderjahren aggregiert.",
+          sections: {
+            balance: "Die Waage",
+            stats: "Vier Zahlen",
+            care: "Versorgungsspannung",
+            timeline: "Abspielen & wählen",
+          },
+          balance:
+            "Die Waage kippt zur schwereren Seite. Links = natürliche Veränderung ({natural}); rechts = Netto-Zuwanderung ({migration}). Gewinnt die Zuwanderung, kippt die Waage nach rechts — so gleicht die Stadt das Geburten-Sterbe-Defizit aus.",
+          stats:
+            "Vier Kennzahlen für {year}: natürliche Veränderung {natural}, Netto-Zuwanderung {migration}, Bevölkerungsänderung zum Vorjahr {popDelta}, Einwohner gesamt {population}.",
+          care:
+            "Rettungseinsätze und Ärzteangebot, jeweils auf Basis 2010 = 100. {year}: Rettung {emerg}, Ärzte {docs}, Spannung {gap}. Positiv = Angebot führt; negativ = Nachfrage zieht vor.",
+          timeline:
+            "Abspielen für Jahr für Jahr, oder den Schieberegler ziehen. Die Schlusszeile fasst zusammen, was dominierte — Wachstum, Abwanderung oder Versorgungsspannung.",
+        },
+        play: "Zeitstrahl abspielen",
+        pause: "Pause",
+        scrubHint: "Jahr wählen",
+        popDelta: "Veränderung zum Vorjahr",
+        balanceLabel: "Bevölkerungsbilanz",
+        careLabel: "Versorgung vs. Nachfrage",
+        careGap: "Versorgungsspannung",
+        careSupplyLead:
+          "Ärzteangebot führt um {gap} Indexpunkte — Kapazität liegt vor der Rettungslast.",
+        careDemandLead:
+          "Rettungsnachfrage führt um {gap} Indexpunkte — Einsätze wachsen schneller als das Angebot.",
+        careEvenLead:
+          "Ärzteangebot und Rettungsnachfrage auf gleichem Index — ausgeglichen zur Basis 2010.",
+        careTension: {
+          balanced: "Ausgeglichen zur Basis",
+          supplyLeads: "Angebot zieht vor",
+          demandLeads: "Nachfrage zieht vor",
+          baseline: "Basis 2010 = Index 100",
+        },
+        verdictGrowth:
+          "{year}: Zuwanderung ({migration}) gleicht das natürliche Defizit ({natural}) aus — die Bevölkerung wuchs um {popDelta}.",
+        verdictOutflow:
+          "{year}: seltenes Netto-Abwanderungsjahr ({net}) — ohne Zuwanderungspuffer Richtung {pop}.",
+        verdictCareDemand:
+          "{year}: Rettungsindex {emerg} vs. Ärzte {docs} — {gap} Punkte Versorgungsspannung.",
+        focusLabel: "Wohin der Fokus gehört",
+        tripleGap: "{district} — Dreifach-Lücke ({count} Stadtteil markiert)",
+        priorityDistrict: "{district} — höchste Versorgungspriorität",
+        exploreMap: "Auf der Karte ansehen →",
+      },
     },
   },
   map: {
@@ -629,14 +1092,14 @@ const de: Dict = {
     lens: {
       eyebrow: "Dreifach-Linse",
       title: "Zugang ist nicht eindimensional",
-      lead: "Drei Linsen umschalten — Ärzte, Krankentransport-Bedarf und Nahverkehr. Stadtteile leuchten auf, wenn jede aktive Linse schwach ist.",
+      lead: "Drei Linsen umschalten — Ärzte, Älterenbevölkerung (65+) und Nahverkehr. Stadtteile leuchten auf, wenn jede aktive Linse schwach ist.",
       tripleLens: "Dreifach-Linse",
       compoundLegend: "Dreifach-Lücke · {count} Stadtteile",
       weak: "Schwach (aktive Linsen)",
       mixed: "Gemischt",
       strong: "Starker Zugang",
       tripleGap: "Dreifach-Lücke",
-      meta: "Transport-Proxy aus {transport} stadtweiten Krankentransporten · {stops} Magdeburg-Haltestellen · {radius} km Radius",
+      meta: "Anteil 65+ aus KISS-MD · {stops} Magdeburg-Haltestellen im {radius}-km-Radius",
       rankingTitle: "Zusammengesetzter Zugangsindex",
       rankingHint: "Jedes Prisma bündelt drei Zugangslinsen. Wo jede Facette schwach ist, entsteht eine Dreifach-Lücke.",
       indexEyebrow: "Zugangsindex",
@@ -652,13 +1115,13 @@ const de: Dict = {
       panelTitle: "Linsen-Übersicht",
       toggles: {
         physicians: "Ärzte",
-        transport: "Transportbedarf",
+        transport: "Älterenbevölkerung (65+)",
         transit: "ÖPNV-Haltestellen",
       },
       levels: { weak: "Schwach", medium: "Gemischt", strong: "Stark" },
       popup: {
         physicians: "Ärzte / 1k",
-        transport: "Krankentransporte / J. (geschätzt)",
+        transport: "Anteil Einwohner 65+",
         transit: "Bus-/Tram-Haltestellen im Radius",
         transitShort: "Haltestellen",
       },
@@ -700,6 +1163,52 @@ const de: Dict = {
       vulnerability: "Versorgungspriorität",
       riskRank: "Priorität",
     },
+    gapExplainer: {
+      open: "Lücke verstehen",
+      tapWedge: "Farbsegment anklicken — die Notiz zeichnet sich ein",
+      prismAria: "Interaktives Lücken-Prisma — Segment anklicken für die Erklärung",
+      close: "Schließen",
+      eyebrow: "Lücken-Story",
+      gapScore: "{weak} von {total} Linsen schwach",
+      tripleGapNote:
+        "{district} liegt in der Dreifach-Lücke — schwach auf jeder aktiven Linse gleichzeitig.",
+      flipToMethod: "So funktioniert’s →",
+      flipBack: "← Zurück zu den Notizen",
+      methodEyebrow: "Hinter der Linse",
+      methodTitle: "Wie Lücken entstehen",
+      tertile:
+        "Jede Linse teilt alle Magdeburger Stadtteile in Drittel — schwach, gemischt, stark — anhand stadweiter Grenzwerte, nicht fester Schwellen.",
+      mapTitle: "Die Karte",
+      mapBody:
+        "Leaflet zeigt CARTO/OSM-Kacheln nur als Hintergrund. Stadtteil-Punkte liegen auf festen Zentroiden — keine OSM-Grenzen. Blasengröße = Bevölkerung; Farbe folgt der aktiven Ansicht.",
+      dataTitle: "Stadtteildaten",
+      dataBody:
+        "Bevölkerung, Ärzte, Apotheken und Anteil 65+ stammen aus KISS-MD-Excel-Dateien, per Stadtteilname verknüpft. ÖPNV-Haltestellen werden aus ÖV-Koordinaten im Radius um jeden Zentroid gezählt.",
+      lensesTitle: "Die drei Linsen",
+      lensMethod: {
+        physicians: "Ärzte pro 1.000 Einwohner — aus Ärzte und Apotheken + Bevölkerungstabellen.",
+        elderly:
+          "Anteil 65+ fließt in einen Nachfrage-Proxy (Bevölkerung × Altersgewicht). Höhere modellierte Nachfrage = schwaches Drittel.",
+        transit: "Bus-/Tram-Haltestellen im {radius}-km-Radius um den Stadtteil-Zentroid — aus Magdeburger ÖV-Daten.",
+      },
+      lens: {
+        physicians: {
+          weak: "Nur {value} Ärzte hier — unter dem unteren Drittel der Stadt. Weniger Ärzte pro Einwohner als in den meisten Stadtteilen.",
+          medium: "{value} liegt in der Mitte — weder knapp noch reichlich, im Vergleich zu ganz Magdeburg.",
+          strong: "{value} — gehört zu den besser versorgten Stadtteilen bei der Ärztdichte.",
+        },
+        transport: {
+          weak: "{value} ab 65 — höherer Älterenanteil, modellierter Versorgungsdruck im oberen Stadtdrittel.",
+          medium: "{value} ab 65 — mittlerer Nachfragedruck im Magdeburg-Vergleich.",
+          strong: "{value} ab 65 — jüngeres Profil, hier liest sich der Druck auf dieser Linse niedriger.",
+        },
+        transit: {
+          weak: "{value} Haltestellen im {radius}-km-Radius — schwerer ohne Auto erreichbar.",
+          medium: "{value} Haltestellen in der Nähe — mittlere ÖPNV-Anbindung für Magdeburg.",
+          strong: "{value} Haltestellen im Radius — relativ gut an Bus und Tram angebunden.",
+        },
+      },
+    },
   },
   closing: {
     eyebrow: "Ungleichheits-Linse",
@@ -713,7 +1222,7 @@ const de: Dict = {
     elderly: "Ältere",
     tripleGap: "Dreifach-Lücke",
     tripleGapBody:
-      "Schwach bei Ärzten, Krankentransport-Proxy und Busanbindung — {ratio}/1.000 Ärzte, nur {stops} Haltestellen in der Nähe.",
+      "Schwach bei Ärzten, Älterenbevölkerung und Busanbindung — {ratio}/1.000 Ärzte, nur {stops} Haltestellen in der Nähe.",
     scaleStory: "Größe × Vulnerabilität",
     scaleBody:
       "{residents} Einwohner, {elderly}% Ältere, nur {ratio} Ärzte pro 1.000 — Priorität #1 nach kombiniertem Bedarf.",
